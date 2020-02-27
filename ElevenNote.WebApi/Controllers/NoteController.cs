@@ -20,6 +20,7 @@ namespace ElevenNote.WebApi.Controllers
             return noteService;
         }
 
+        [HttpGet]
         public IHttpActionResult Get()
         {
             NoteService noteService = CreateNoteService();
@@ -27,6 +28,7 @@ namespace ElevenNote.WebApi.Controllers
             return Ok(notes);
         }
 
+        [HttpPost]
         public IHttpActionResult Post(NoteCreate note)
         {
             if (!ModelState.IsValid)
@@ -48,6 +50,7 @@ namespace ElevenNote.WebApi.Controllers
             return Ok(note);
         }
 
+        [HttpGet]
         public IHttpActionResult GetNoteById(int id)
         {
             NoteService noteService = CreateNoteService();
@@ -55,6 +58,21 @@ namespace ElevenNote.WebApi.Controllers
             return Ok(note);
         }
 
+        [HttpPut]
+        public IHttpActionResult Put(NoteEdit note)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
+            if(note == null)
+                return BadRequest("Cannot send null object");
+
+            var service = CreateNoteService();
+
+            if (!service.UpdateNote(note))
+                return InternalServerError();
+
+            return Ok(note);
+        }
     }
 }
