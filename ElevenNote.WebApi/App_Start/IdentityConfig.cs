@@ -29,11 +29,12 @@ namespace ElevenNote.WebApi
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
+                // set booleans to false for testing, but true when letting users interact with the server
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                RequireNonLetterOrDigit = false,
+                RequireDigit = false,
+                RequireLowercase = false,
+                RequireUppercase = false,
             };
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
