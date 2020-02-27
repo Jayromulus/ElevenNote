@@ -86,5 +86,30 @@ namespace ElevenNote.Services
                 };
             }
         }
+
+        public bool UpdateNote(NoteEdit model)
+        {
+            // use a local and disposable instance of the db context
+            using(var ctx = new ApplicationDbContext())
+            {
+                // set the entity to the value we are looking for
+                var entity =
+                    // check the context
+                    ctx
+                        // go into the notes
+                        .Notes
+                        // find the entity using the note id and the user id who is logged in
+                        .Single(e => e.NoteId == model.NoteId && e.OwnerId == _userId);
+
+                // update the found entity to the new information provided
+                entity.Title = model.Title;
+                entity.Content = model.Content;
+                entity.ModifiedUtc = DateTimeOffset.Now;
+
+                // return true if the note updates, false if it does now
+                return ctx.SaveChanges() == 1;
+            }
+
+        }
     }
 }
